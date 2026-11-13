@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0E0C09">
+<title>운빨 성장가이드 영상</title>
+<link rel="icon" href="https://raw.githubusercontent.com/gapjatv/boss-img/main/%EA%B0%91%EC%9E%90tv%EC%8B%A0_%EC%9A%B4%EB%B9%A8%EC%A1%B4%EB%A7%8E%EA%B2%9C.png">
+<!-- =====================================================================
+     ▼▼▼ 운빨 성장가이드 영상 목록 (여기만 수정하세요) ▼▼▼
+     - 새 영상은 맨 위 줄에 추가하면 상단(01번)에 자동으로 표시돼요.
+     - 형식: ["유튜브 링크", "제목"],
+     - 제목을 ""로 비워두면 유튜브 원래 제목을 자동으로 가져와요.
+     - 링크는 youtu.be / youtube.com/watch?v= / shorts 모두 가능해요.
+     ===================================================================== -->
+<script>
+  const VIDEOS = [  
+    ["https://youtu.be/9kdgZ58xF4Y", "가우스tv 로켓츄 패시브의 진실 생각보다 좋다?"],
+    ["https://youtu.be/Kg00Z4aaozw", "가우스tv물딜성장 순서 최신판!에밀리 키우셔야 합니다"],
+    ["https://youtu.be/HcHSLEZ7sUo", "가우스tv 2.0.10 마딜성장순 총정리!이렇게 키우세요!"],
+    ["https://youtu.be/ZruTNMR5g7Y", "가우스tv 2.0.2 버전 성장순서 성장루트 2가지 최신메타"],
+    ["https://youtu.be/WaOvWAKBskc", "파워나갔다 6월 물딜, 마딜 종합 티어표"],
+    ["https://youtu.be/VtHCdltcGvM", "ROX록스 최신 성장 가이드"],
+    ["https://youtu.be/ytC-1n2lF5c", "김바탕 초보자 가이드 무과금으로 얻을 수 있는 다이야"],
+    ["https://youtu.be/YqpRe0MSC0A", "가우스tv 1.7.7 버전 성장순서(금고 1~6)"],
+    ["https://youtu.be/zsx3yPGrf00", "서비니 금머행666 신모드 마딜 운영방법"],
+    ["https://youtu.be/UqOBp1Wk9h0", "나사사 신화석, 불멸석 최적 성장순서"],
+    ["https://youtu.be/eNRcCOkztBU", "가우스tv 펄스는 누구와 써야할까?"],
+    ["https://youtu.be/0m0oeYzwZZA", "가우스tv 불멸 미야옹 궁극기 범위"],
+  ];
+</script>
+<!-- ▲▲▲ 영상 목록 끝 ▲▲▲ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E0C09;
+    --bg-card: #17130E;
+    --bg-card-2: #1C1712;
+    --line: #2B241B;
+    --gold: #D4A93A;
+    --gold-bright: #F2C94C;
+    --text: #F2EBDA;
+    --muted: #9C9080;
+    --tag-stop: #E2453A;
+    --tag-revamp: #D4A93A;
+    --tag-keep: #6FA37A;
+    --tag-adjust: #CC8B3E;
+    --tag-remove: #B5524A;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;overflow-x:hidden;width:100%;}
+  body{
+    background:
+      radial-gradient(ellipse at top, rgba(212,169,58,0.07), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans KR', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    text-size-adjust:100%;
+    -webkit-text-size-adjust:100%;
+  }
+  button, a{touch-action:manipulation;}
+  .wrap{max-width:760px;margin:0 auto;padding:44px 20px 64px;}
+
+  .page{display:none;}
+  .page.active{display:block;animation:pagein .35s ease;}
+  @keyframes pagein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- HEADER ---------- */
+  header{text-align:center;margin-bottom:32px;}
+
+  .beta-stamp{
+    display:inline-flex;align-items:center;gap:6px;
+    border:2px solid var(--gold);
+    color:var(--gold-bright);
+    font-family:'Black Han Sans',sans-serif;
+    font-size:13px;letter-spacing:.12em;
+    padding:5px 14px;border-radius:5px;
+    transform:rotate(-2deg);
+    margin-bottom:18px;
+    background:rgba(212,169,58,0.06);
+  }
+  .beta-stamp::before{content:"●";font-size:8px;color:var(--gold-bright);}
+  h1{
+    font-family:'Black Han Sans',sans-serif;
+    font-size:clamp(28px,6vw,40px);
+    letter-spacing:.01em;
+    margin:0 0 12px;
+    color:var(--text);
+  }
+  h1 span{color:var(--gold-bright);}
+  .sub{
+    color:var(--muted);
+    font-size:14.5px;
+    max-width:480px;
+    margin:0 auto;
+  }
+  .sub b{color:var(--gold);font-weight:700;}
+
+  /* ---------- 상단 중앙 갑자TV 로고 (우선예약 위젯 캐릭터 이미지와 동일 형식) ---------- */
+  .top-logo-wrap{ text-align:center; margin-bottom:18px; }
+  .top-logo{
+    width:110px; height:110px;
+    object-fit:contain;
+    border-radius:50%;
+    border:3px solid #ffcc00;
+    box-shadow: 0 0 18px rgba(255,204,0,0.45);
+    cursor:pointer;
+    transition: filter .22s ease, box-shadow .22s ease, transform .15s ease;
+    filter:brightness(1);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .top-logo:hover,
+  .top-logo:active,
+  .top-logo.touched{
+    filter: brightness(1.45) drop-shadow(0 0 12px rgba(255,204,0,0.9));
+    box-shadow: 0 0 35px rgba(255,204,0,0.75);
+    transform: scale(1.06);
+  }
+
+  /* ---------- video guide page specific ---------- */
+  .vid-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
+    gap:18px;
+    margin-top:30px;
+  }
+  .vid-card{
+    position:relative;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .vid-card:hover{
+    transform:translateY(-3px);
+    border-color:var(--gold);
+    box-shadow:0 10px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,169,58,0.25);
+  }
+  .vid-num{
+    position:absolute;top:9px;left:9px;z-index:2;
+    font-family:'Black Han Sans',sans-serif;
+    font-size:11px;color:var(--gold-bright);
+    background:rgba(14,12,9,0.75);
+    border:1px solid rgba(242,201,76,0.4);
+    padding:2px 8px;border-radius:6px;
+  }
+  .vid-title{
+    padding:13px 14px 10px;
+    font-weight:700;font-size:13.8px;
+    color:var(--text);
+    line-height:1.45;
+  }
+  .vid-thumb-link{display:block;position:relative;}
+  .vid-thumb-wrap{
+    position:relative;
+    aspect-ratio:16/9;
+    background:#000;
+    overflow:hidden;
+  }
+  .vid-thumb-wrap img{
+    width:100%;height:100%;
+    object-fit:cover;display:block;
+    transition:transform .3s ease;
+  }
+  .vid-card:hover .vid-thumb-wrap img{transform:scale(1.05);}
+  .play-badge{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.55) 100%);
+  }
+  .play-circle{
+    width:50px;height:50px;border-radius:50%;
+    background:rgba(20,16,10,0.55);
+    border:2px solid rgba(255,255,255,0.85);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .2s ease, background .2s ease, border-color .2s ease;
+  }
+  .play-circle svg{width:18px;height:18px;fill:#fff;}
+  .vid-card:hover .play-circle{
+    transform:scale(1.14);
+    background:rgba(229,72,57,0.9);
+    border-color:#fff;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    margin-top:40px;
+    text-align:center;
+    padding-top:26px;
+    border-top:1px solid var(--line);
+  }
+  footer p{color:var(--muted);font-size:12.5px;margin:4px 0;}
+  footer .ribbon{
+    font-family:'Black Han Sans',sans-serif;
+    color:var(--gold);
+    font-size:13px;
+    letter-spacing:.05em;
+  }
+
+  @media (max-width:560px){
+    .wrap{padding:32px 16px 48px;}
+    h1{font-size:26px;}
+    .vid-grid{grid-template-columns:1fr;gap:14px;}
+    .vid-title{font-size:13.5px;}
+  }
+
+  @media (max-width:380px){
+    .wrap{padding:26px 13px 40px;}
+    h1{font-size:23px;}
+    .sub{font-size:13.5px;}
+    .top-logo{width:92px;height:92px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .page.active{animation:none!important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= 운빨 성장가이드 영상 ================= -->
+<div class="wrap page active" id="page3">
+
+  <header>
+    <div class="top-logo-wrap">
+      <img
+        id="topLogo"
+        src="https://raw.githubusercontent.com/gapjatv/boss-img/main/%EA%B0%91%EC%9E%90tv%EC%8B%A0_%EC%9A%B4%EB%B9%A8%EC%A1%B4%EB%A7%8E%EA%B2%9C.png"
+        class="top-logo"
+        alt="갑자TV 로고"
+        draggable="false"
+      >
+    </div>
+    <div class="beta-stamp">PLAYLIST · 추천 영상</div>
+    <h1>운빨 <span>성장가이드</span> 영상</h1>
+    <p class="sub">갑자가 추천하는 성장·공략 영상 모음이에요.<br>
+    썸네일을 누르면 <b>유튜브</b>로 바로 이동해요.</p>
+  </header>
+
+  <!-- 영상 카드는 맨 위 VIDEOS 목록으로 자동 생성돼요 -->
+  <div class="vid-grid" id="vidGrid"></div>
+
+  <footer>
+    <p class="ribbon">갑자TV 운영팀</p>
+    <p>추천 영상은 채널 운영진이 직접 선별했어요.</p>
+  </footer>
+
+</div>
+
+<script>
+  // ── 운빨 성장가이드 영상 카드 자동 생성 ──
+  function getYoutubeId(url) {
+    const m = String(url).trim().match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/))([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
+
+  (function renderVideos() {
+    const grid = document.getElementById('vidGrid');
+    if (!grid) return;
+    let num = 0;
+
+    VIDEOS.forEach(([url, title]) => {
+      const id = getYoutubeId(url);
+      if (!id) { console.warn('유튜브 링크를 인식하지 못했어요:', url); return; }
+      num++;
+
+      const card = document.createElement('div');
+      card.className = 'vid-card';
+
+      const titleEl = document.createElement('div');
+      titleEl.className = 'vid-title';
+      titleEl.textContent = title || '제목 불러오는 중...';
+
+      const link = document.createElement('a');
+      link.className = 'vid-thumb-link';
+      link.href = 'https://youtu.be/' + id;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+
+      const numEl = document.createElement('span');
+      numEl.className = 'vid-num';
+      numEl.textContent = String(num).padStart(2, '0');
+
+      const thumbWrap = document.createElement('div');
+      thumbWrap.className = 'vid-thumb-wrap';
+
+      const img = document.createElement('img');
+      img.src = 'https://img.youtube.com/vi/' + id + '/hqdefault.jpg';
+      img.alt = (title || '유튜브 영상') + ' 썸네일';
+      img.loading = 'lazy';
+
+      const badge = document.createElement('div');
+      badge.className = 'play-badge';
+      badge.innerHTML = '<div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>';
+
+      thumbWrap.appendChild(img);
+      thumbWrap.appendChild(badge);
+      link.appendChild(numEl);
+      link.appendChild(thumbWrap);
+      card.appendChild(titleEl);
+      card.appendChild(link);
+      grid.appendChild(card);
+
+      // 제목을 비워두면 유튜브 원래 제목 자동 불러오기
+      if (!title) {
+        fetch('https://noembed.com/embed?url=' + encodeURIComponent('https://www.youtube.com/watch?v=' + id))
+          .then(r => r.json())
+          .then(d => {
+            const t = d && d.title ? d.title : '유튜브 영상';
+            titleEl.textContent = t;
+            img.alt = t + ' 썸네일';
+          })
+          .catch(() => { titleEl.textContent = '유튜브 영상'; });
+      }
+    });
+  })();
+</script>
+
+<script>
+  // ── 로고 터치/클릭 효과 (모바일) ──
+  const topLogo = document.getElementById('topLogo');
+  topLogo.addEventListener('touchstart', () => {
+    topLogo.classList.add('touched');
+  }, { passive: true });
+  topLogo.addEventListener('touchend', () => {
+    setTimeout(() => topLogo.classList.remove('touched'), 300);
+  });
+</script>
+</body>
+</html>
