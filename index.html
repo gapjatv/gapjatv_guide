@@ -7,15 +7,25 @@
 <title>운빨 성장가이드 영상</title>
 <link rel="icon" href="https://raw.githubusercontent.com/gapjatv/boss-img/main/%EA%B0%91%EC%9E%90tv%EC%8B%A0_%EC%9A%B4%EB%B9%A8%EC%A1%B4%EB%A7%8E%EA%B2%9C.png">
 <!-- =====================================================================
-     ▼▼▼ 운빨 성장가이드 영상 목록 (여기만 수정하세요) ▼▼▼
-     - 새 영상은 맨 위 줄에 추가하면 상단(01번)에 자동으로 표시돼요.
+     ▼▼▼ 갑자TV 사이트 관제 연결 주소 ▼▼▼
+     Apps Script [배포] 후 받은 "웹 앱 URL"을 아래 따옴표 안에 붙여넣으세요.
+     (두 페이지 모두 같은 주소를 넣으면 돼요)
+     ===================================================================== -->
+<script>
+  const GAPJA_STATS_URL = "https://script.google.com/macros/s/AKfycbxzradI0qZGVKBMkMA3FY_MDPM8j8avOhqjA47LaBst9-cc5H5emKIH_fpksXivlbwZ/exec";
+</script>
+<!-- ▲▲▲ 연결 주소 끝 ▲▲▲ -->
+
+<!-- =====================================================================
+     ▼▼▼ 운빨 성장가이드 기본 영상 목록 (예비용) ▼▼▼
+     - 평소에는 텔레그램 봇으로 등록한 [영상목록] 시트를 읽어서 보여줘요.
+     - 아래 목록은 시트를 못 읽어올 때(연결 주소 미입력·오류)만 대신 보여줘요.
      - 형식: ["유튜브 링크", "제목"],
      - 제목을 ""로 비워두면 유튜브 원래 제목을 자동으로 가져와요.
      - 링크는 youtu.be / youtube.com/watch?v= / shorts 모두 가능해요.
      ===================================================================== -->
 <script>
-  const VIDEOS = [  
-    ["https://youtu.be/9kdgZ58xF4Y", "가우스tv 로켓츄 패시브의 진실 생각보다 좋다?"],
+  const VIDEOS = [
     ["https://youtu.be/Kg00Z4aaozw", "가우스tv물딜성장 순서 최신판!에밀리 키우셔야 합니다"],
     ["https://youtu.be/HcHSLEZ7sUo", "가우스tv 2.0.10 마딜성장순 총정리!이렇게 키우세요!"],
     ["https://youtu.be/ZruTNMR5g7Y", "가우스tv 2.0.2 버전 성장순서 성장루트 2가지 최신메타"],
@@ -155,6 +165,13 @@
     color:var(--text);
     line-height:1.45;
   }
+  .vid-loading{
+    grid-column:1/-1;
+    text-align:center;
+    color:var(--muted);
+    font-size:13.5px;
+    padding:40px 0;
+  }
   .vid-thumb-link{display:block;position:relative;}
   .vid-thumb-wrap{
     position:relative;
@@ -259,12 +276,13 @@
     return m ? m[1] : null;
   }
 
-  (function renderVideos() {
+  function renderVideos(list) {
     const grid = document.getElementById('vidGrid');
     if (!grid) return;
+    grid.innerHTML = '';
     let num = 0;
 
-    VIDEOS.forEach(([url, title]) => {
+    list.forEach(([url, title]) => {
       const id = getYoutubeId(url);
       if (!id) { console.warn('유튜브 링크를 인식하지 못했어요:', url); return; }
       num++;
@@ -318,6 +336,30 @@
           .catch(() => { titleEl.textContent = '유튜브 영상'; });
       }
     });
+  }
+
+  // ── 영상 목록 불러오기: [영상목록] 시트 → 실패하면 기본 목록 ──
+  (function loadVideos() {
+    const grid = document.getElementById('vidGrid');
+    const useSheet = typeof GAPJA_STATS_URL === 'string' && GAPJA_STATS_URL.indexOf('https://script.google.com/') === 0;
+    if (!useSheet) { renderVideos(VIDEOS); return; }
+
+    if (grid) grid.innerHTML = '<div class="vid-loading">영상 목록 불러오는 중...</div>';
+
+    let done = false;
+    function fallback() { if (!done) { done = true; renderVideos(VIDEOS); } }
+    const timer = setTimeout(fallback, 6000);
+
+    fetch(GAPJA_STATS_URL + '?action=videos')
+      .then(r => r.json())
+      .then(d => {
+        if (done) return;
+        const list = (d && d.ok && Array.isArray(d.videos)) ? d.videos.map(v => [v.url, v.title]) : [];
+        done = true;
+        clearTimeout(timer);
+        renderVideos(list.length ? list : VIDEOS);
+      })
+      .catch(() => { clearTimeout(timer); fallback(); });
   })();
 </script>
 
@@ -330,6 +372,71 @@
   topLogo.addEventListener('touchend', () => {
     setTimeout(() => topLogo.classList.remove('touched'), 300);
   });
+</script>
+
+<!-- ===== 갑자TV 접속 기록 (Apps Script로 전송) ===== -->
+<script>
+  (function gapjaTrackVisit() {
+    if (typeof GAPJA_STATS_URL !== 'string' || GAPJA_STATS_URL.indexOf('https://script.google.com/') !== 0) return;
+
+    function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+
+    // 내 접속은 통계에서 빼기: 주소 뒤에 ?me=1 붙여서 한 번 접속 (되돌리기: ?me=0)
+    if (/[?&]me=1(&|$)/.test(location.search)) lsSet('gapja_me', '1');
+    if (/[?&]me=0(&|$)/.test(location.search)) lsDel('gapja_me');
+    if (lsGet('gapja_me') === '1') return;
+
+    // 방문자 구분 코드 (브라우저마다 랜덤 생성, 개인정보 아님)
+    let vid = lsGet('gapja_vid');
+    let first = '0';
+    if (!vid) {
+      vid = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      lsSet('gapja_vid', vid);
+      first = '1';
+    }
+
+    const dev = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? '모바일' : 'PC';
+
+    // 유입 경로
+    let ref = '직접 접속';
+    try {
+      if (document.referrer) {
+        const h = new URL(document.referrer).hostname.replace(/^www\./, '').replace(/^m\./, '');
+        if (h === location.hostname) ref = '사이트 내부';
+        else if (/youtube\.com|youtu\.be/.test(h)) ref = '유튜브';
+        else if (/google\./.test(h)) ref = '구글';
+        else if (/naver\./.test(h)) ref = '네이버';
+        else if (/kakao|daum/.test(h)) ref = '카카오/다음';
+        else if (/instagram/.test(h)) ref = '인스타그램';
+        else if (/discord/.test(h)) ref = '디스코드';
+        else ref = h;
+      }
+    } catch (e) {}
+
+    function send(ip) {
+      const q = new URLSearchParams({
+        action: 'hit', page: 'guide', vid: vid, dev: dev, ref: ref, ip: ip || '', first: first
+      });
+      fetch(GAPJA_STATS_URL + '?' + q.toString(), { mode: 'no-cors', keepalive: true }).catch(function () {});
+    }
+
+    // IP는 앞자리만 남기고 뒷자리는 가려서 전송 (예: 211.234.*.*)
+    function maskIp(ip) {
+      if (!ip) return '';
+      if (ip.indexOf('.') > -1) { const a = ip.split('.'); return a[0] + '.' + a[1] + '.*.*'; }
+      if (ip.indexOf(':') > -1) { const b = ip.split(':'); return b[0] + ':' + b[1] + ':*'; }
+      return '';
+    }
+
+    let done = false;
+    const timer = setTimeout(function () { if (!done) { done = true; send(''); } }, 3000);
+    fetch('https://api.ipify.org?format=json')
+      .then(function (r) { return r.json(); })
+      .then(function (d) { if (!done) { done = true; clearTimeout(timer); send(maskIp(d && d.ip)); } })
+      .catch(function () { if (!done) { done = true; clearTimeout(timer); send(''); } });
+  })();
 </script>
 </body>
 </html>
